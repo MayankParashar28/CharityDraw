@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     const userId = session.metadata?.userId
 
     if (userId && session.subscription) {
-      const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
+      const subscription: any = await stripe.subscriptions.retrieve(session.subscription as string)
       
       const { data: userProfile } = await supabase.from('users').select('charity_percentage').eq('id', userId).single()
       const charityPercentage = userProfile?.charity_percentage || 10
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
   }
 
   if (event.type === 'invoice.payment_failed') {
-    const invoice = event.data.object as Stripe.Invoice
+    const invoice: any = event.data.object
     if (invoice.subscription) {
       await supabase.from('users').update({
         subscription_status: 'lapsed'
@@ -70,13 +70,13 @@ export async function POST(req: Request) {
   }
 
   if (event.type === 'invoice.payment_succeeded') {
-    const invoice = event.data.object as Stripe.Invoice
+    const invoice: any = event.data.object
     if (invoice.subscription) {
       await supabase.from('users').update({
         subscription_status: 'active'
       }).eq('subscription_id', invoice.subscription)
       
-      const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string)
+      const subscription: any = await stripe.subscriptions.retrieve(invoice.subscription as string)
       
       const { data: subData } = await supabase.from('subscriptions').select('user_id').eq('stripe_subscription_id', subscription.id).single()
       const { data: userProfile } = await supabase.from('users').select('charity_percentage').eq('id', subData?.user_id).single()
