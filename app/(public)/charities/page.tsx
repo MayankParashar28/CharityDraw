@@ -1,6 +1,12 @@
 import { createServerSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Supported Charities',
+  description: 'Discover the charities you can support through CharityDraw. Every subscription helps fund their missions.',
+}
 
 export default async function CharitiesPage() {
   const supabase = await createServerSupabaseClient()

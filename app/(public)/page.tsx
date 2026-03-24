@@ -1,12 +1,23 @@
 import Link from 'next/link'
-import { ArrowRight, Gift, Target, Heart } from 'lucide-react'
+import { ArrowRight, Gift, Target, Heart, Star } from 'lucide-react'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { signout } from '@/app/(auth)/actions'
 import MobileNav from '@/components/MobileNav'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Home',
+  description: 'CharityDraw — A subscription-based golf lottery. Enter your Stableford scores, match the draw numbers, and win massive cash prizes while funding charities.',
+  openGraph: {
+    title: 'CharityDraw — Win Big, Support Charities',
+    description: 'Play golf, enter scores, win prizes, and fund charities. Subscribe monthly or yearly.',
+  },
+}
 
 export default async function Home() {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const { data: featuredCharity } = await supabase.from('charities').select('*').eq('is_featured', true).limit(1).single()
 
   return (
     <div className="min-h-screen skeuo-base flex flex-col font-sans">
@@ -92,6 +103,35 @@ export default async function Home() {
         </div>
       </section>
 
+      {featuredCharity && (
+        <section className="py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="skeuo-card rounded-3xl overflow-hidden flex flex-col md:flex-row">
+              <div className="md:w-2/5 h-48 md:h-auto skeuo-inset relative">
+                {featuredCharity.image_url ? (
+                  <img src={featuredCharity.image_url} alt={featuredCharity.name} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Heart className="w-16 h-16 text-gray-300" />
+                  </div>
+                )}
+              </div>
+              <div className="p-8 sm:p-10 md:w-3/5 flex flex-col justify-center">
+                <div className="flex items-center gap-2 mb-3">
+                  <Star className="w-5 h-5 text-amber-500 fill-amber-400" />
+                  <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest">Featured Charity</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-black text-gray-700 mb-3">{featuredCharity.name}</h3>
+                <p className="text-gray-500 font-medium leading-relaxed mb-6 line-clamp-3">{featuredCharity.description}</p>
+                <Link href={`/charities/${featuredCharity.id}`} className="skeuo-button px-6 py-3 rounded-xl text-green-700 font-black uppercase tracking-widest text-xs inline-flex items-center self-start">
+                  Learn More <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       <section id="pricing" className="py-32">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 skeuo-text-emboss">Power Requirements</h2>
@@ -139,6 +179,37 @@ export default async function Home() {
           <p className="skeuo-text-emboss font-bold uppercase tracking-widest text-sm">© 2026 CharityDraw System Registry.</p>
         </div>
       </footer>
+
+      {/* JSON-LD Structured Data for rich search results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: 'CharityDraw',
+            description: 'A subscription-based golf lottery that funds charities while offering cash prizes.',
+            url: 'https://charitydraw.com',
+            applicationCategory: 'GameApplication',
+            offers: [
+              {
+                '@type': 'Offer',
+                name: 'Monthly Subscription',
+                price: '10.00',
+                priceCurrency: 'USD',
+                availability: 'https://schema.org/InStock',
+              },
+              {
+                '@type': 'Offer',
+                name: 'Annual Subscription',
+                price: '100.00',
+                priceCurrency: 'USD',
+                availability: 'https://schema.org/InStock',
+              },
+            ],
+          }),
+        }}
+      />
     </div>
   )
 }

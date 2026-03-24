@@ -3,6 +3,9 @@
 import { useActionState } from 'react'
 import { login } from '../actions'
 
+// Note: metadata can't be exported from client components.
+// This is handled by the parent layout template.
+
 const initialState = { error: '' }
 
 export default function LoginPage() {

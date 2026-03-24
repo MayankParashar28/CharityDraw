@@ -1,6 +1,17 @@
 import { createServerSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const resolvedParams = await params
+  const supabase = await createServerSupabaseClient()
+  const { data: charity } = await supabase.from('charities').select('name, description').eq('id', resolvedParams.id).single()
+  return {
+    title: charity?.name || 'Charity Profile',
+    description: charity?.description?.substring(0, 160) || 'Learn about this charity and how CharityDraw supports their mission.',
+  }
+}
 
 export default async function CharityProfile({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params
