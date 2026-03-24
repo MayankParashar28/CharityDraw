@@ -3,6 +3,7 @@ import { LayoutDashboard, Trophy, Target, Heart, Gift, LogOut } from 'lucide-rea
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
 import { signout } from '@/app/(auth)/actions'
+import MobileSidebar from '@/components/MobileSidebar'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createServerSupabaseClient()
@@ -56,10 +57,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
       </aside>
       <main className="flex-1 overflow-y-auto skeuo-base relative">
         <div className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
-        <div className="h-20 skeuo-inset border-b border-white/40 flex items-center px-6 md:hidden">
-           <span className="text-2xl font-black skeuo-text-emboss">CharityDraw</span>
-        </div>
-        <div className="p-6 md:p-10 max-w-7xl mx-auto">
+        <MobileSidebar links={[
+          { href: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5 text-gray-500" /> },
+          { href: '/dashboard/scores', label: 'Log Scores', icon: <Target className="w-5 h-5 text-gray-500" /> },
+          { href: '/dashboard/draws', label: 'Draw Results', icon: <Gift className="w-5 h-5 text-gray-500" /> },
+          { href: '/dashboard/charity', label: 'My Charity', icon: <Heart className="w-5 h-5 text-gray-500" /> },
+          { href: '/dashboard/winnings', label: 'Winnings', icon: <Trophy className="w-5 h-5 text-gray-500" /> },
+        ]} />
+        <div className="p-6 md:p-10 pt-16 md:pt-10 max-w-7xl mx-auto">
           {children}
         </div>
       </main>

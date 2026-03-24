@@ -2,6 +2,7 @@ import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { createServerSupabaseClient } from '@/lib/supabase'
+import { sendSubscriptionConfirmed, sendSubscriptionLapsed } from '@/lib/emailService'
 import Stripe from 'stripe'
 
 export async function POST(req: Request) {
@@ -50,6 +51,12 @@ export async function POST(req: Request) {
         current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
         charity_contribution: charityContribution
       })
+
+      // Send confirmation email
+      const planName = subscription.items.data[0].plan.interval === 'year' ? 'Yearly' : 'Monthly'
+      if (session.customer_email) {
+        await sendSubscriptionConfirmed(session.customer_email, planName)
+      }
     }
   }
 
@@ -66,6 +73,11 @@ export async function POST(req: Request) {
       await supabase.from('users').update({
         subscription_status: 'lapsed'
       }).eq('subscription_id', invoice.subscription)
+
+      // Notify user of lapsed payment
+      if (invoice.customer_email) {
+        await sendSubscriptionLapsed(invoice.customer_email)
+      }
     }
   }
 

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowRight, Gift, Target, Heart } from 'lucide-react'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { signout } from '@/app/(auth)/actions'
+import MobileNav from '@/components/MobileNav'
 
 export default async function Home() {
   const supabase = await createServerSupabaseClient()
@@ -19,7 +20,7 @@ export default async function Home() {
             <Link href="/charities" className="hover:text-gray-800 transition-colors">Charities</Link>
             <a href="#pricing" className="hover:text-gray-800 transition-colors">Pricing</a>
           </nav>
-          <div className="flex gap-4 items-center">
+          <div className="hidden md:flex gap-4 items-center">
             {user ? (
               <>
                 <Link href="/dashboard" className="skeuo-button text-gray-700 px-6 py-2.5 rounded-full font-bold uppercase text-xs tracking-wider">
@@ -36,6 +37,7 @@ export default async function Home() {
               </>
             )}
           </div>
+          <MobileNav user={!!user} />
         </div>
       </header>
 

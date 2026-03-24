@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { signout } from '@/app/(auth)/actions'
 import AdminUnlocker from '@/components/admin/AdminUnlocker'
 import LockAdminButton from '@/components/admin/LockAdminButton'
+import MobileSidebar from '@/components/MobileSidebar'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createServerSupabaseClient()
@@ -72,7 +73,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       </aside>
       <main className="flex-1 overflow-y-auto skeuo-base relative">
         <div className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
-        <div className="p-6 md:p-10 max-w-7xl mx-auto">
+        <MobileSidebar links={[
+          { href: '/admin', label: 'Overview', icon: <LayoutDashboard className="w-5 h-5 text-gray-500" /> },
+          { href: '/admin/users', label: 'Users', icon: <Users className="w-5 h-5 text-gray-500" /> },
+          { href: '/admin/draws', label: 'Draw Engine', icon: <Gift className="w-5 h-5 text-gray-500" /> },
+          { href: '/admin/charities', label: 'Charities', icon: <Heart className="w-5 h-5 text-gray-500" /> },
+          { href: '/admin/winners', label: 'Winners', icon: <Trophy className="w-5 h-5 text-gray-500" /> },
+          { href: '/admin/reports', label: 'Reports', icon: <FileText className="w-5 h-5 text-gray-500" /> },
+        ]} />
+        <div className="p-6 md:p-10 pt-16 md:pt-10 max-w-7xl mx-auto">
           {children}
         </div>
       </main>

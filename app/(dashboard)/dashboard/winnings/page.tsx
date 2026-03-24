@@ -3,16 +3,16 @@ import { Trophy } from 'lucide-react'
 
 export default function WinningsPage() {
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-20 rounded-full blur-3xl -mr-16 -mt-16"></div>
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="skeuo-card rounded-3xl p-10 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-amber-400 rounded-full blur-[80px] opacity-20 -mr-10 -mt-10"></div>
         <div className="flex items-center space-x-4 relative z-10">
-          <div className="p-3 bg-white/20 rounded-xl">
-            <Trophy className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 skeuo-inset rounded-2xl flex items-center justify-center border border-white/30">
+            <Trophy className="w-8 h-8 text-amber-500" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold">Winnings & Payouts</h1>
-            <p className="text-orange-50 mt-1">Track your jackpot wins and securely upload verification proofs.</p>
+            <h1 className="text-3xl font-black skeuo-text-emboss">Winnings & Payouts</h1>
+            <p className="text-gray-500 font-medium tracking-wide mt-1 text-sm">Track your jackpot wins and securely upload verification proofs.</p>
           </div>
         </div>
       </div>

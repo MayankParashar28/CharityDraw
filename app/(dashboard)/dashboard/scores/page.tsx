@@ -30,16 +30,16 @@ export default function ScoresPage() {
   }, [])
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -mr-16 -mt-16"></div>
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="skeuo-card rounded-3xl p-10 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-blue-400 rounded-full blur-[80px] opacity-20 -mr-10 -mt-10"></div>
         <div className="flex items-center space-x-4 relative z-10">
-          <div className="p-3 bg-white/20 rounded-xl">
-            <Target className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 skeuo-inset rounded-2xl flex items-center justify-center border border-white/30">
+            <Target className="w-8 h-8 text-blue-500" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold">Score Management</h1>
-            <p className="text-blue-100 mt-1">Log your golf rounds and build your entry for the next draw.</p>
+            <h1 className="text-3xl font-black skeuo-text-emboss">Score Management</h1>
+            <p className="text-gray-500 font-medium tracking-wide mt-1 text-sm">Log your golf rounds and build your entry for the next draw.</p>
           </div>
         </div>
       </div>

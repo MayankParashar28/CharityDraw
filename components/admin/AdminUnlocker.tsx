@@ -16,20 +16,31 @@ export default function AdminUnlocker({ children }: { children: React.ReactNode 
     setMounting(false)
   }, [])
 
-  const handleUnlock = (e: React.FormEvent) => {
+  const handleUnlock = async (e: React.FormEvent) => {
     e.preventDefault()
-    const validPass = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123'
-    if (password === validPass) {
-      sessionStorage.setItem('admin_master_key', 'granted')
-      setUnlocked(true)
-    } else {
+    try {
+      const res = await fetch('/api/admin/verify-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        sessionStorage.setItem('admin_master_key', 'granted')
+        setUnlocked(true)
+      } else {
+        setError(true)
+        setPassword('')
+        setTimeout(() => setError(false), 2000)
+      }
+    } catch {
       setError(true)
       setPassword('')
       setTimeout(() => setError(false), 2000)
     }
   }
 
-  if (mounting) return null // Prevent hydration flash
+  if (mounting) return null
 
   if (unlocked) return <>{children}</>
 
