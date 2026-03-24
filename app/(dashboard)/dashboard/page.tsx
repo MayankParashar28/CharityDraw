@@ -39,31 +39,31 @@ export default async function DashboardHomePage() {
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <h1 className="text-4xl font-black skeuo-text-emboss">Welcome back, {displayName}</h1>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-black skeuo-text-emboss">Welcome back, {displayName}</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="skeuo-card p-8 rounded-3xl relative overflow-hidden group transition-all">
+        <div className="skeuo-card p-5 sm:p-8 rounded-3xl relative overflow-hidden group transition-all">
           <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
           <h3 className="text-gray-500 font-medium mb-1 relative z-10 flex items-center">
             <Info className="w-4 h-4 mr-2" /> Subscription Status
           </h3>
-          <div className="text-2xl font-bold capitalize text-gray-900 flex items-center relative z-10 mt-2">
+          <div className="text-xl sm:text-2xl font-bold capitalize text-gray-900 flex items-center relative z-10 mt-2">
             {profile?.subscription_status || 'Inactive'}
             {profile?.subscription_status === 'active' && <span className="ml-3 w-3 h-3 bg-green-500 rounded-full shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>}
           </div>
           <p className="text-sm text-gray-500 mt-2 relative z-10 font-medium tracking-wide">Plan: {profile?.subscription_plan === 'yearly' ? 'Yearly Supporter' : profile?.subscription_plan === 'monthly' ? 'Monthly Supporter' : 'None'}</p>
         </div>
         
-        <div className="skeuo-card p-8 rounded-3xl relative overflow-hidden group transition-all">
+        <div className="skeuo-card p-5 sm:p-8 rounded-3xl relative overflow-hidden group transition-all">
           <div className="absolute top-0 right-0 w-32 h-32 bg-pink-400 rounded-full blur-[60px] opacity-20 -mr-10 -mt-10 transition-transform group-hover:scale-125"></div>
           <h3 className="text-gray-500 font-extrabold mb-1 relative z-10 flex items-center uppercase tracking-widest text-[10px]">
             <Heart className="w-4 h-4 mr-2 text-pink-500" /> Selected Charity
           </h3>
-          <div className="text-2xl font-black text-gray-800 relative z-10 mt-3 truncate pr-4">{charityName}</div>
+          <div className="text-lg sm:text-2xl font-black text-gray-800 relative z-10 mt-3 truncate pr-4">{charityName}</div>
           <p className="text-sm text-gray-500 mt-2 relative z-10 font-medium tracking-wide">Donating <strong className="text-pink-600 font-extrabold">{profile?.charity_percentage || 10}%</strong> of capacity</p>
         </div>
 
-        <div className="skeuo-card p-8 rounded-3xl relative overflow-hidden ring-4 ring-blue-500/20">
+        <div className="skeuo-card p-5 sm:p-8 rounded-3xl relative overflow-hidden ring-4 ring-blue-500/20">
           <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500 rounded-full blur-[70px] opacity-20 -mr-10 -mt-10"></div>
           <div className="absolute bottom-0 right-0 opacity-5 blur-[2px]">
             <CalendarDays className="w-48 h-48" />
@@ -71,7 +71,7 @@ export default async function DashboardHomePage() {
           <h3 className="text-blue-600 font-extrabold mb-1 relative z-10 flex items-center uppercase tracking-widest text-[10px]">
             <Target className="w-4 h-4 mr-2" /> Next Jackpot Draw
           </h3>
-          <div className="text-3xl font-black text-gray-800 relative z-10 mt-3 tracking-tighter">{nextDrawDate}</div>
+          <div className="text-xl sm:text-3xl font-black text-gray-800 relative z-10 mt-3 tracking-tighter">{nextDrawDate}</div>
           <p className="text-sm font-bold text-blue-600 mt-2 relative z-10 uppercase tracking-widest">
             {scoreCount >= 5 
               ? '✅ Chamber Fully Loaded' 
@@ -80,11 +80,11 @@ export default async function DashboardHomePage() {
         </div>
       </div>
 
-      <div className="mt-12">
-        <div className="flex justify-between items-end mb-8">
+      <div className="mt-8 sm:mt-12">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-6 sm:mb-8 gap-4">
           <div>
-            <h2 className="text-2xl font-black skeuo-text-emboss">Live Score Array</h2>
-            <p className="text-gray-500 font-medium tracking-wide mt-1 text-sm">Your mechanical draw inputs over the last 5 cycles.</p>
+            <h2 className="text-xl sm:text-2xl font-black skeuo-text-emboss">Live Score Array</h2>
+            <p className="text-gray-500 font-medium tracking-wide mt-1 text-xs sm:text-sm">Your mechanical draw inputs over the last 5 cycles.</p>
           </div>
           <Link href="/dashboard/scores" className="skeuo-button text-blue-600 px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center">
             Input <ArrowRight className="w-4 h-4 ml-2" />
@@ -103,13 +103,13 @@ export default async function DashboardHomePage() {
             </Link>
           </div>
         ) : (
-          <div className="skeuo-card rounded-3xl overflow-hidden p-2">
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2">
+          <div className="skeuo-card rounded-3xl overflow-hidden p-1 sm:p-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2">
               {scores?.map((scoreObj, i) => (
-                <div key={i} className="p-8 text-center skeuo-inset rounded-2xl flex flex-col justify-center relative overflow-hidden group">
+                <div key={i} className="p-5 sm:p-8 text-center skeuo-inset rounded-2xl flex flex-col justify-center relative overflow-hidden group">
                   <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-400 to-indigo-500 opacity-50"></div>
                   <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-3">Position {i + 1}</p>
-                  <p className="text-5xl font-black text-gray-700 tracking-tighter drop-shadow-md">
+                  <p className="text-3xl sm:text-5xl font-black text-gray-700 tracking-tighter drop-shadow-md">
                     {scoreObj.score}
                   </p>
                   <p className="text-xs font-bold text-gray-500 mt-4 uppercase tracking-widest">{new Date(scoreObj.played_on).toLocaleDateString()}</p>
@@ -118,7 +118,7 @@ export default async function DashboardHomePage() {
               
               {/* Fill remaining with empty slots if < 5 */}
               {Array.from({ length: 5 - scoreCount }).map((_, i) => (
-                <div key={`empty-${i}`} className="p-8 text-center flex flex-col items-center justify-center skeuo-inset rounded-2xl opacity-60">
+                <div key={`empty-${i}`} className="p-5 sm:p-8 text-center flex flex-col items-center justify-center skeuo-inset rounded-2xl opacity-60">
                   <div className="w-16 h-16 rounded-full skeuo-base flex items-center justify-center mb-4 shadow-inner border border-white/20">
                     <span className="text-gray-400 font-black text-xl">?</span>
                   </div>
