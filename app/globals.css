@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-metallic: #e0e5ec;
+  --color-highlight: rgba(255,255,255,0.9);
+  --color-shadow: rgba(163,177,198,0.5);
+  --color-shadow-dark: rgba(163,177,198,0.7);
+}
+
+@layer utilities {
+  .skeuo-base {
+    background-color: var(--color-metallic);
+    color: #4a5568;
+  }
+
+  .skeuo-card {
+    background: var(--color-metallic);
+    box-shadow: 
+      8px 8px 16px var(--color-shadow), 
+      -8px -8px 16px var(--color-highlight);
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+
+  .skeuo-inset {
+    background: var(--color-metallic);
+    box-shadow: 
+      inset 6px 6px 12px var(--color-shadow), 
+      inset -6px -6px 12px var(--color-highlight);
+  }
+
+  .skeuo-button {
+    background: var(--color-metallic);
+    box-shadow: 
+      5px 5px 10px var(--color-shadow), 
+      -5px -5px 10px var(--color-highlight);
+    transition: all 0.15s ease-out;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .skeuo-button:hover {
+    box-shadow: 
+      7px 7px 14px var(--color-shadow), 
+      -7px -7px 14px var(--color-highlight);
+    transform: translateY(-1px);
+  }
+
+  .skeuo-button:active, .skeuo-button-active {
+    box-shadow: 
+      inset 4px 4px 8px var(--color-shadow), 
+      inset -4px -4px 8px var(--color-highlight);
+    transform: translateY(1px);
+    border-color: transparent;
+  }
+
+  .skeuo-glass {
+    background: rgba(224, 229, 236, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 
+      0 8px 32px 0 rgba(163, 177, 198, 0.2),
+      inset 1px 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .skeuo-text-emboss {
+    color: #718096;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 1), -1px -1px 1px rgba(163, 177, 198, 0.3);
+  }
+}
+
+body {
+  background-color: var(--color-metallic);
+  color: #2d3748;
+}
