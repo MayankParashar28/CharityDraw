@@ -2,6 +2,7 @@
 
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
+import { sendWelcomeEmail } from '@/lib/emailService'
 
 export async function login(prevState: any, formData: FormData) {
   const supabase = await createServerSupabaseClient()
@@ -33,13 +34,15 @@ export async function login(prevState: any, formData: FormData) {
 export async function signup(prevState: any, formData: FormData) {
   const supabase = await createServerSupabaseClient()
 
+  const email = formData.get('email') as string
   const data = {
-    email: formData.get('email') as string,
+    email,
     password: formData.get('password') as string,
     options: {
       data: {
         full_name: formData.get('full_name') as string,
-      }
+      },
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
     }
   }
 
@@ -52,12 +55,21 @@ export async function signup(prevState: any, formData: FormData) {
   if (authData.user) {
     await supabase.from('users').insert({
       id: authData.user.id,
-      email: data.email,
+      email,
       full_name: data.options.data.full_name,
       subscription_status: 'inactive'
     })
+
+    // Send welcome email (non-blocking)
+    sendWelcomeEmail(email, data.options.data.full_name).catch(() => {})
   }
 
+  // If email confirmation is enabled, tell user to check email
+  if (authData.user && !authData.session) {
+    return { success: true, email }
+  }
+
+  // If auto-confirmed (e.g. in dev), redirect to dashboard
   redirect('/dashboard')
 }
 

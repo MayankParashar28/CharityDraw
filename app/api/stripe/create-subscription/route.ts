@@ -36,6 +36,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ url: session.url })
 
   } catch (error: any) {
-    return new NextResponse('Internal Error', { status: 500 })
+    console.error('Stripe create-subscription error:', error.message)
+    return NextResponse.json(
+      { error: error.message || 'Failed to create checkout session' },
+      { status: 500 }
+    )
   }
 }

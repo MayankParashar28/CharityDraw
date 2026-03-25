@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase'
+import { sendWinnerApproved, sendWinnerRejected } from '@/lib/emailService'
 
 export async function POST(req: Request) {
   try {
@@ -22,6 +23,29 @@ export async function POST(req: Request) {
 
     const { error } = await supabase.from('winners').update(updatePayload).eq('id', winnerId)
     if (error) throw error
+
+    // Send email notification to the winner
+    const { data: winner } = await supabase
+      .from('winners')
+      .select('user_id, prize_amount')
+      .eq('id', winnerId)
+      .single()
+
+    if (winner) {
+      const { data: winnerUser } = await supabase
+        .from('users')
+        .select('email')
+        .eq('id', winner.user_id)
+        .single()
+
+      if (winnerUser?.email) {
+        if (status === 'approved') {
+          sendWinnerApproved(winnerUser.email, winner.prize_amount).catch(() => {})
+        } else if (status === 'rejected') {
+          sendWinnerRejected(winnerUser.email).catch(() => {})
+        }
+      }
+    }
 
     return NextResponse.json({ success: true })
   } catch (error: any) {

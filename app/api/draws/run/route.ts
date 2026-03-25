@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { generateRandomNumbers, generateAlgorithmicNumbers, countMatches } from '@/lib/drawEngine'
 import { calculatePrizePools } from '@/lib/prizeCalculator'
+import { sendWinnerNotification } from '@/lib/emailService'
 
 export async function POST(req: Request) {
   try {
@@ -109,7 +110,17 @@ export async function POST(req: Request) {
       })
 
       if (entriesToInsert.length > 0) await supabase.from('draw_entries').insert(entriesToInsert)
-      if (winnersToInsert.length > 0) await supabase.from('winners').insert(winnersToInsert)
+      if (winnersToInsert.length > 0) {
+        await supabase.from('winners').insert(winnersToInsert)
+
+        // Send winner notification emails (non-blocking)
+        for (const winner of winnersToInsert) {
+          const { data: winnerUser } = await supabase.from('users').select('email').eq('id', winner.user_id).single()
+          if (winnerUser?.email) {
+            sendWinnerNotification(winnerUser.email, winner.prize_amount).catch(() => {})
+          }
+        }
+      }
       
       // Update jackpot rolled over flag
       if (tier5Count === 0) {

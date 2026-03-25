@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 import { ArrowRight, Info, Heart, Target, CalendarDays } from 'lucide-react'
+import SubscribeButton from '@/components/SubscribeButton'
 
 export default async function DashboardHomePage() {
   const supabase = await createServerSupabaseClient()
@@ -52,6 +53,11 @@ export default async function DashboardHomePage() {
             {profile?.subscription_status === 'active' && <span className="ml-3 w-3 h-3 bg-green-500 rounded-full shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>}
           </div>
           <p className="text-sm text-gray-500 mt-2 relative z-10 font-medium tracking-wide">Plan: {profile?.subscription_plan === 'yearly' ? 'Yearly Supporter' : profile?.subscription_plan === 'monthly' ? 'Monthly Supporter' : 'None'}</p>
+          {profile?.subscription_status !== 'active' && (
+            <div className="mt-4 relative z-10">
+              <SubscribeButton label="Subscribe Now" className="px-5 py-2.5 rounded-xl text-blue-700" />
+            </div>
+          )}
         </div>
         
         <div className="skeuo-card p-5 sm:p-8 rounded-3xl relative overflow-hidden group transition-all">
